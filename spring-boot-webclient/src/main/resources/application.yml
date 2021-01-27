@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: dev
+server:
+  servlet:
+    context-path: /
+  port: 8080
+
+---
+
+logging:
+  level:
+    org.springframework.web.reactive.function.client.ExchangeFunctions: DEBUG  #��û ���� �α� ���� ���ؼ�
+    # main] o.s.w.r.f.client.ExchangeFunctions       : [97a145b] HTTP POST http://192.168.7.158:18080/cid
+    # [ctor-http-nio-1] o.s.w.r.f.client.ExchangeFunctions       : [97a145b] Response 200 OK
+    # [ctor-http-nio-1] com.example.myapp.WebClientRunner2       : org.springframework.web.reactive.function.client.DefaultClientResponse$DefaultHeaders@98ff69c, 200 OK
