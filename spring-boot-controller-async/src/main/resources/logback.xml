@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="2 seconds">
+
+	<property name="APP_LOG_PATH" value="./log" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+        	<!-- <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}]%highlight([%-5level]) {%t}%X %highlight(%m%n{})at %c.%M\(%F:%L\)%n</pattern> -->
+            <!--<pattern>%d{yyyy-MM-dd HH:mm:ss} %highlight([%-5level]) [%t] %msg - \(%F:%L\)%n</pattern>-->
+            <!-- <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level] {%t}%X %m%n{}at %c.%M\(%F:%L\)%n</pattern> -->
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level] {%t}%X %m - \(%F:%L\)%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileRecreateAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5p] [%t] %m - \(%F:%L\)%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${APP_LOG_PATH}/log.%d{yyyyMMdd}</fileNamePattern>
+            <maxHistory>120</maxHistory>
+        </rollingPolicy>
+    </appender>
+	
+	<!-- application.yml 보다 우선순위가 낮지만 실시간 반영 가능. -->
+	<!-- 
+	<logger name="io.netty"> 										<level value="DEBUG" /></logger>
+	
+	<logger name="org.hibernate.SQL"> 								<level value="DEBUG" /></logger>
+	<logger name="org.hibernate.type"> 								<level value="DEBUG" /></logger>
+	<logger name="org.hibernate.type.descriptor.sql.BasicBinder"> 	<level value="TRACE" /></logger>
+	<logger name="org.hibernate.tool.hbm2ddl"> 						<level value="DEBUG" /></logger>
+	<logger name="org.hibernate.pretty"> 							<level value="DEBUG" /></logger>
+	<logger name="org.hibernate.cache"> 							<level value="DEBUG" /></logger>
+	<logger name="org.hibernate.transaction"> 						<level value="DEBUG" /></logger>
+	<logger name="org.hibernate.jdbc"> 								<level value="DEBUG" /></logger>
+	<logger name="org.hibernate.hql.ast.AST"> 						<level value="DEBUG" /></logger>
+	<logger name="org.hibernate.secure"> 							<level value="DEBUG" /></logger>
+	
+	<logger name="org.springframework.orm"> 						<level value="TRACE" /></logger>
+	<logger name="org.springframework.transaction"> 				<level value="TRACE" /></logger>
+	
+	<logger name="com.zaxxer.hikari"> 								<level value="DEBUG" /></logger>
+	-->
+
+    <logger name="com.example.myapp"> 						        <level value="DEBUG" /></logger>
+    <logger name="org.springframework.web.reactive"> 				<level value="DEBUG" /></logger> <!-- webclient 로그랑 상관없음-->
+<!--    <logger name="io.netty"> 				                        <level value="DEBUG" /></logger> &lt;!&ndash; webclient 로그랑 상관없음&ndash;&gt;-->
+    <logger name="io.projectreactor.netty">                         <level value="DEBUG" /></logger>
+
+    <root level="INFO">
+		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="FILE"/>
+    </root>
+	
+</configuration>
