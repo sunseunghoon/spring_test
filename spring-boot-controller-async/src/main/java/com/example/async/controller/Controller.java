@@ -27,7 +27,7 @@ public class Controller {
      */
     // http://localhost:8080/click?code=102&reason=success
     @GetMapping(value = "/click")
-    public ResponseEntity<?> click(@RequestParam("code") int code,
+    public ResponseEntity<String> click(@RequestParam("code") int code,
                      @RequestParam("reason") String reason) throws InterruptedException {
 
         log.info("최초 click 컨트롤러 요청 들어옴. code = {}, reason = {}", code, reason);

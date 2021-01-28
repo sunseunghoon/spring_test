@@ -9,6 +9,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class Result {
 
-    int code;
-    String reason;
+    private int code;
+    private String reason;
 }
