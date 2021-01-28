@@ -17,7 +17,7 @@ public class AsyncRunner3 implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        Thread.sleep(10000);
+        Thread.sleep(6000);
 //        Future<String> future = asyncFunction.logger2(); //@async함수 호출. 함수는 async스레드에서 처리함
         log.info("컨트롤러3 시작"); //main스레드에서 실행
 //        while(true){

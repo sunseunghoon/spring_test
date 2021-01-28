@@ -1,10 +1,30 @@
 package com.example.async.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+@Slf4j
 @Component
 public class CoreClient {
+
+    private static ExecutorService e = Executors./*newCachedThreadPool*/newFixedThreadPool(30, new BasicThreadFactory.Builder()
+            .namingPattern("Asyn-Listener-%d")
+            .daemon(true)
+            .priority(Thread.MAX_PRIORITY)
+            .build());
+
+    @Autowired
+    CallClient callClient;
+
+    @Autowired
+    CoreListener coreListener;
 
 //        ListenableFuture의 구현체로는 AsyncResult, CompletableToListenableFutureAdapter,
 //              ListenableFutureAdapter, ListenableFutureTask, SettableListenableFuture 등이 있다.
@@ -24,21 +44,25 @@ public class CoreClient {
     /**
      * 메소드 실행 시 ListenerbleFuture addListener 한다.
      */
-    public void serviceRequest(int code, String reason) {
+    public void clickRequest(int code, String reason) throws InterruptedException {
 
-        ListenableFuture<Result> future = null;  // grpcFutrueStub 호출한 결과를 받음.
-//        future =
-
-
+        log.info("click 서비스 요청이 들어옴. 비동기로 서비스 요청 처리를 시작한다.");
+        ListenableFuture<Result> f = callClient.clickServiceReq(code, reason);  // grpcFutrueStub 호출한 결과를 받음.
+        
+        //addListener(Runnable r, Executor e)
+        //비동기 결과를 처리할 부분을 listener로 등록
+        f.addListener( coreListener.clickListener(f), e);
+        log.info("click 서비스 요청 메소드는 종료. 실제 처리는 비동기로 처리");
     }
 
+    public void dragRequest(int code, String reason, HttpServletResponse httpServletResponse) throws InterruptedException {
 
-    private ListenableFuture<Result> getResult(int code, String reason){
+        log.info("drag 서비스 요청이 들어옴. 비동기로 서비스 요청 처리를 시작한다.");
+        ListenableFuture<Result> f = callClient.dragServiceReq(code, reason);  // grpcFutrueStub 호출한 결과를 받음.
 
-        return null;
-//        return new Result.ResultBuilder()
-//                .code(code)
-//                .reason(reason)
-//                .build();
+        //addListener(Runnable r, Executor e)
+        //비동기 결과를 처리할 부분을 listener로 등록
+        f.addListener( coreListener.dragListener(f, httpServletResponse), e);
+        log.info("drag 서비스 요청 메소드는 종료. 실제 처리는 비동기로 처리");
     }
 }
